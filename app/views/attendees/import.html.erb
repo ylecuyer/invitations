@@ -1,0 +1,16 @@
+Importing: <%= @file_name %> 
+<table>
+  <tbody>
+
+<% @rows.each do |row| %>
+
+  <tr>
+    <td><%= row["first_name"] %></td>  
+    <td><%= row["last_name"] %></td>  
+    <td><%= row["email"] %></td>  
+  </tr>
+
+<% end %>
+  </tbody>
+</table>
+

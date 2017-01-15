@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  db:
+    image: postgres:9.6.1
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile-rails
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+      - gems
+    volumes_from:
+      - gems
+  gems:
+    image: busybox
+    volumes:
+      - /ruby_gems
+  maildev:
+    image: djfarrelly/maildev
+    ports:
+      - 1080:80

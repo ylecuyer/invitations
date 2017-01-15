@@ -1,0 +1,123 @@
+<button class="btn btn-default" data-toggle="modal" data-target=".invite-attendee-modal"><i class="fa fa-user-plus"></i> Invite attendee</button>
+<button class="btn btn-default" data-toggle="modal" data-target=".invite-attendees-modal"><i class="fa fa-file-text-o"></i> Invite attendees</button>
+
+<button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-print"></i> Export <span class="caret"></span></button>
+<ul role="menu" class="dropdown-menu">
+  <li><a href="#">Action</a>
+  </li>
+  <li><a href="#">Another action</a>
+  </li>
+  <li><a href="#">Something else here</a>
+  </li>
+  <li class="divider"></li>
+  <li><a href="#">Separated link</a>
+  </li>
+</ul>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#Ref</th>
+      <th>Full Name</th>
+      <th>Email</th>
+      <th>Invited by</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @attendees.each do |attendee| %>
+      <tr>
+        <td style="font-family: 'Lucida Console', Monaco, monospace">#<%= attendee.reference %></th>
+        <td><%= attendee.full_name %></td>
+        <td><%= attendee.email %></td>
+        <td><%= attendee.service.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="modal fade invite-attendee-modal in">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <%= form_for Attendee.new, url: {action: "create"} do |f| %>
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title">Invite attendee</h4>
+        </div>
+
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+              <label>Invited by</label>
+              <%= f.collection_select(:service_id, Service.all, :id, :name, { prompt: true }, { class: "form-control" }) %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+              <label>First name</label>
+              <%= f.text_field :first_name, class: "form-control" %>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+              <label>Last name</label>
+              <%= f.text_field :last_name, class: "form-control" %>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+              <label>Email address</label>
+              <%= f.text_field :email, class: "form-control" %>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <%= f.submit "Send invitation", class: "btn btn-primary" %>
+        </div>
+
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade invite-attendees-modal in">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <%= form_tag url_for({controller: 'attendees', action: 'import'}), method: :post, multipart: true do |f| %>
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title">Invite attendees</h4>
+        </div>
+
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+              <label>Invited by</label>
+              <%= select_tag(:service_id, options_from_collection_for_select(Service.all, :id, :name), prompt: "", class: "form-control") %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+              <label>Import file</label>
+              <%= file_field_tag :file, class: "form-control" %>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <%= submit_tag "Send invitation", class: "btn btn-primary" %>
+        </div>
+
+      <% end %>
+
+    </div>
+  </div>
+</div>
