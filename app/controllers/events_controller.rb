@@ -48,6 +48,8 @@ class EventsController < ApplicationController
 
   def checkin
     @event = Event.find params[:event_id]
+    
+    render layout: false
   end
 
   private
