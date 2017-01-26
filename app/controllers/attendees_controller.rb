@@ -8,10 +8,11 @@ class AttendeesController < ApplicationController
 
   def create
     attendee = Attendee.new(attendee_params)
-    
     attendee.event = @event
   
-    attendee.save
+    unless attendee.save
+	flash[:error] = attendee.errors.full_messages.to_sentence
+    end
 
     redirect_to event_attendees_path(@event)
 
