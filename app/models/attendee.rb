@@ -5,7 +5,7 @@ class Attendee < ApplicationRecord
   belongs_to :event
   belongs_to :service
 
-  validate :not_yet_invited
+  #validate :not_yet_invited
 
   def full_name
     "#{last_name} #{first_name}"

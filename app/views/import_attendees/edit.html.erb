@@ -1,0 +1,15 @@
+<div class="page-title">
+  <div class="title_left">
+    <h3>Editing</h3>
+  </div>
+</div>
+
+<%= form_for([@event, @import, @import_attendee]) do |f|%>
+
+  <%= f.text_field :last_name %>
+  <%= f.text_field :first_name %>
+  <%= f.text_field :email %>
+
+  <%= f.submit %>
+
+<% end %>

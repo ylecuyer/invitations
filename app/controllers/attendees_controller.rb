@@ -21,26 +21,27 @@ class AttendeesController < ApplicationController
   def import
     file = params[:file]
     @file_name = file.original_filename
+
+    @import = Import.create(filename: @file_name, service_id: params[:service_id])
   
     open_uploaded_file
-    check_file
-    @rows = get_rows
+    #check_file
+    import_rows
+
+    redirect_to event_import_path(@event, @import)
 
   end
 
   private
 
-  def get_rows
-
-    attendees = []
-
+  def import_rows
     (2..@spreadsheet.last_row).map do |row_number|
       row = get_row(row_number)
-      
-      attendees << row
-    end
 
-    attendees
+      row[:import_id] = @import.id
+      
+      ImportAttendee.create!(row) 
+    end
   end
 
   def open_uploaded_file

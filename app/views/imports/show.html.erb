@@ -1,0 +1,32 @@
+<div class="page-title">
+  <div class="title_left">
+    <h3>Importing <small><%= @import.filename %></small> </h3>
+  </div>
+</div>
+
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Message</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+<% @import.import_attendees.each do |import_attendee| %>
+  <tr class="<%= import_attendee.css_class %>">
+      <td><%= import_attendee.first_name %></td>
+      <td><%= import_attendee.last_name %></td>
+      <td><%= import_attendee.email %></td>
+      <td><%= import_attendee.message %></td>
+      <td><%= link_to 'Edit', edit_event_import_import_attendee_path(@event, @import, import_attendee) %> <%= link_to 'Delete', event_import_import_attendee_path(@event, @import, import_attendee), method: :delete, data: { confirm: "Are you sure?" } %></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+
+<%= link_to "Import", event_import_terminate_path(@event, @import), method: :post, class: "btn btn-primary" %>

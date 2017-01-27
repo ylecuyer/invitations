@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170115223746) do
+ActiveRecord::Schema.define(version: 20170127022715) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,26 @@ ActiveRecord::Schema.define(version: 20170115223746) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "import_attendees", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "import_id"
+    t.string   "status"
+    t.string   "message"
+    t.index ["import_id"], name: "index_import_attendees_on_import_id", using: :btree
+  end
+
+  create_table "imports", force: :cascade do |t|
+    t.string   "filename"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "service_id"
+    t.index ["service_id"], name: "index_imports_on_service_id", using: :btree
+  end
+
   create_table "services", force: :cascade do |t|
     t.string   "name"
     t.string   "email"
@@ -43,4 +63,6 @@ ActiveRecord::Schema.define(version: 20170115223746) do
 
   add_foreign_key "attendees", "events"
   add_foreign_key "attendees", "services"
+  add_foreign_key "import_attendees", "imports"
+  add_foreign_key "imports", "services"
 end
